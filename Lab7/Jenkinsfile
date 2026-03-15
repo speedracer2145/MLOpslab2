@@ -18,6 +18,8 @@ pipeline {
             steps {
                 sh '''
                 docker run -d -p 8001:8000 --name $CONTAINER $IMAGE
+                docker ps
+                docker logs $CONTAINER
                 '''
             }
         }
