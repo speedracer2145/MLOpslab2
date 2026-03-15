@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE = "alokprakash1587/wine_predict_2022bcs0014"
+        CONTAINER = "ml_test_container"
+    }
+
+    stages {
+
+        stage('Pull Image') {
+            steps {
+                sh 'docker pull $IMAGE'
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                sh '''
+                docker run -d -p 8001:8000 --name $CONTAINER $IMAGE
+                '''
+            }
+        }
+
+        stage('Wait for Service') {
+            steps {
+                sh 'sleep 10'
+            }
+        }
+
+        stage('Valid Request Test') {
+            steps {
+                sh '''
+                curl -X POST http://localhost:8001/predict \
+                -H "Content-Type: application/json" \
+                -d '{"features":[7.4,0.70,0.00,1.9,0.076,11.0,34.0,0.9978,3.51,0.56,9.4]}'
+                '''
+            }
+        }
+
+        stage('Invalid Request Test') {
+            steps {
+                sh '''
+                curl -X POST http://localhost:8001/predict \
+                -H "Content-Type: application/json" \
+                -d '{"bad_input":[1,2,3]}'
+                '''
+            }
+        }
+
+        stage('Stop Container') {
+            steps {
+                sh '''
+                docker stop $CONTAINER
+                docker rm $CONTAINER
+                '''
+            }
+        }
+    }
+}
