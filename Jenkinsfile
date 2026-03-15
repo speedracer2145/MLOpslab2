@@ -9,9 +9,11 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git credentialsId: 'git-creds', url: 'https://github.com/speedracer2145/MLOpslab2.git'
-            }
-        }
+                git branch: 'main',
+                    credentialsId: 'git-creds',
+                    url: 'https://github.com/speedracer2145/MLOpslab2.git'
+                    }
+                }
 
         stage('Setup Python') {
             steps {
