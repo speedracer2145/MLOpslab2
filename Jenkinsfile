@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     ACCURACY = sh(
-                        script: "jq '.accuracy' app/artifacts/metrics.json",
+                        script: "jq '.accuracy' outputs/metrics.json",
                         returnStdout: true
                     ).trim()
                     echo "Accuracy: ${ACCURACY}"
