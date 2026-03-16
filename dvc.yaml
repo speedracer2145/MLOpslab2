@@ -1,0 +1,8 @@
+stages:
+  train:
+    cmd: python Lab8/src/train.py
+    deps:
+    - Lab8/data/housing.csv
+    - Lab8/src/train.py
+    outs:
+    - Lab8/outputs/model.pkl
